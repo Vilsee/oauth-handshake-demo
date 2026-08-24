@@ -1,0 +1,161 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════
+ * DESIGN TOKENS — Light Theme
+ * ═══════════════════════════════════════════════════════════════
+ *
+ * Palette concept: "Warm Ink on Parchment"
+ *
+ * Neutrals are warm-toned (stone/sand family, not blue-gray).
+ * Accent is a deep teal-green — confident, uncommon in AI demos,
+ * pairs naturally with warm neutrals.  No purple, no gradient.
+ *
+ * Every value below is hand-picked. Nothing is a default Tailwind
+ * color or a shifted HSL step from an existing palette.
+ * ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Surfaces ────────────────────────────────────────────── */
+  --surface:         #f6f4f0;  /* Warm parchment — main background */
+  --surface-raised:  #ffffff;  /* Cards, modals — true white for lift */
+  --surface-sunken:  #edeae4;  /* Inset areas, code blocks, sidebars */
+  --surface-overlay: rgba(246, 244, 240, 0.88); /* Translucent backdrop */
+
+  /* ── Ink (text hierarchy) ────────────────────────────────── */
+  --ink:          #1a1816;  /* Primary text — almost-black with warmth */
+  --ink-muted:    #5c564e;  /* Secondary text — captions, metadata */
+  --ink-faint:    #9e968b;  /* Tertiary — placeholders, disabled */
+  --ink-inverse:  #f6f4f0;  /* Text on dark/accent backgrounds */
+
+  /* ── Accent — Deep Teal ──────────────────────────────────── */
+  /* A single confident color. Not a gradient, not neon.        */
+  --accent:        #1a7a6d;  /* Primary actions, links, focus rings */
+  --accent-hover:  #145f55;  /* Darkened for hover states */
+  --accent-subtle: #e6f5f2;  /* Tinted backgrounds, tags, badges */
+
+  /* ── Semantic ────────────────────────────────────────────── */
+  --danger:        #c4342d;  /* Errors, destructive actions */
+  --danger-subtle: #fdf0ef;  /* Error backgrounds */
+  --success:       #2d8659;  /* Confirmations */
+  --success-subtle:#ecf7f1;  /* Success backgrounds */
+  --warning:       #b8860b;  /* Caution notices */
+  --warning-subtle:#fdf8eb;  /* Warning backgrounds */
+
+  /* ── Borders ─────────────────────────────────────────────── */
+  --edge:        #dfd9d0;  /* Default borders — warm, not gray */
+  --edge-strong: #c7bfb3;  /* Emphasized borders, dividers */
+
+  /* ── Font stacks (loaded in layout.tsx via next/font) ────── */
+  --font-display: "Source Serif 4", Georgia, serif;
+  --font-body:    "Inter Tight", system-ui, sans-serif;
+  --font-mono:    "JetBrains Mono", "Fira Code", monospace;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+ * DARK THEME
+ * ═══════════════════════════════════════════════════════════════
+ * Same hue families, inverted lightness.  Accent shifts slightly
+ * brighter to maintain contrast on dark surfaces.
+ * ═══════════════════════════════════════════════════════════════ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface:         #121110;
+    --surface-raised:  #1e1c1a;
+    --surface-sunken:  #0a0908;
+    --surface-overlay: rgba(18, 17, 16, 0.88);
+
+    --ink:          #ede9e3;
+    --ink-muted:    #a09889;
+    --ink-faint:    #5e574e;
+    --ink-inverse:  #121110;
+
+    --accent:        #3bbfa8;
+    --accent-hover:  #5ed4c0;
+    --accent-subtle: #152e2a;
+
+    --danger:        #e85d56;
+    --danger-subtle: #2e1412;
+    --success:       #4cb87a;
+    --success-subtle:#122e1f;
+    --warning:       #d4a422;
+    --warning-subtle:#2a2110;
+
+    --edge:        #2e2b27;
+    --edge-strong: #454039;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+ * BASE LAYER — global resets and defaults
+ * ═══════════════════════════════════════════════════════════════ */
+@layer base {
+  html {
+    /* Smooth scroll for in-page anchors, not for animations */
+    scroll-behavior: smooth;
+  }
+
+  body {
+    color: var(--ink);
+    background-color: var(--surface);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Headings default to serif display font */
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+
+  /* Warm border default instead of Tailwind's slate */
+  *,
+  *::before,
+  *::after {
+    border-color: var(--edge);
+  }
+
+  /* Focus ring — uses accent color, visible and accessible */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* Selection highlight matches accent */
+  ::selection {
+    background-color: var(--accent-subtle);
+    color: var(--ink);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+ * COMPONENT LAYER — reusable patterns
+ * ═══════════════════════════════════════════════════════════════ */
+@layer components {
+  /* Utility for the "raised card" pattern */
+  .card {
+    background-color: var(--surface-raised);
+    border: 1px solid var(--edge);
+  }
+
+  /* Subtle code/pre styling */
+  code, pre {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+  }
+
+  code:not(pre code) {
+    background-color: var(--surface-sunken);
+    padding: 0.125em 0.375em;
+    border-radius: 4px;
+    font-size: 0.85em;
+  }
+}
