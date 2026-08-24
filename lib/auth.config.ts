@@ -12,12 +12,15 @@ import type { NextAuthConfig } from "next-auth";
  * server-only code.  The full provider list is merged in lib/auth.ts.
  */
 export const authConfig = {
+  trustHost: true,
+  secret: process.env.AUTH_SECRET,
   // ── Custom Pages ──────────────────────────────────────────────
   // Override the default Auth.js sign-in page with our own route.
   // When an unauthenticated user is redirected, they land at "/" (home)
   // rather than the built-in /api/auth/signin scaffold.
   pages: {
     signIn: "/",
+    error: "/",
   },
 
   // ── Session Strategy ──────────────────────────────────────────
